@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import { useState } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 
 const Shorten = () => {
@@ -31,52 +33,79 @@ const Shorten = () => {
         setUrl("");
         setShorturl("");
         console.log(result);
-        alert(result.message);
+
+        toast("Short Urls generated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       })
       .catch((error) => console.error(error));
   };
 
   return (
-    <div className="mx-auto max-w-lg bg-slate-200 my-16 p-8 rounded-lg flex flex-col gap-2">
-      <h1 className="font-bold text-2xl">Generate Your Urls</h1>
-      <div className="flex flex-col gap-2">
-        <input
-          className="px-4 py-2 border focus:outline-slate-600 rounded-md"
-          value={url}
-          type="text"
-          placeholder="Enter your URLs"
-          onChange={(e) => {
-            setUrl(e.target.value);
-          }}
-        />
-        <input
-          className="px-4 py-2 border focus:outline-slate-600 rounded-md"
-          value={shorturl}
-          type="text"
-          placeholder="Enter your preferred short URLs text"
-          onChange={(e) => {
-            setShorturl(e.target.value);
-          }}
-        />
-        <button
-          onClick={generate}
-          className="bg-slate-500 rounded-lg shadow-lg p-3 py-1 font-bold"
-        >
-          Generate
-        </button>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition="Bounce"
+      />
+
+      <div className="mx-auto max-w-lg bg-slate-200 my-16 p-8 rounded-lg flex flex-col gap-2">
+        <h1 className="font-bold text-2xl">Generate Your Urls</h1>
+        <div className="flex flex-col gap-2">
+          <input
+            className="px-4 py-2 border focus:outline-slate-600 rounded-md"
+            value={url}
+            type="text"
+            placeholder="Enter your URLs"
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
+          />
+          <input
+            className="px-4 py-2 border focus:outline-slate-600 rounded-md"
+            value={shorturl}
+            type="text"
+            placeholder="Enter your preferred short URLs text"
+            onChange={(e) => {
+              setShorturl(e.target.value);
+            }}
+          />
+          <button
+            onClick={generate}
+            className="bg-slate-500 rounded-lg shadow-lg p-3 py-1 font-bold"
+          >
+            Generate
+          </button>
+        </div>
+        {generated && (
+          <>
+            {" "}
+            <span className="font-bold text-lg">Your Link </span>
+            <code>
+              <Link target="_blank" href={generated}>
+                {generated}
+              </Link>
+            </code>
+          </>
+        )}
       </div>
-      {generated && (
-        <>
-          {" "}
-          <span className="font-bold text-lg">Your Link </span>
-          <code>
-            <Link target="_blank" href={generated}>
-              {generated}
-            </Link>
-          </code>
-        </>
-      )}
-    </div>
+    </>
   );
 };
 
